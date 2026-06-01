@@ -620,8 +620,16 @@ textarea#inp{font-size:14px;color:#f8f7f1;padding:10px 13px}
 }
 .auth-card h1{font-family:'Outfit',sans-serif;font-size:26px;font-weight:600;letter-spacing:-.03em;color:#f6f4ee;margin-bottom:8px}
 .auth-card>p{font-size:13px;color:#b8bac5;line-height:1.6;margin-bottom:22px}
-#googleBtnWrap{display:flex;justify-content:center;min-height:44px;margin-bottom:14px}
-.auth-hint{font-size:10.5px;color:#747783;line-height:1.5}
+.auth-form{text-align:left;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.auth-in{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#f6f4ee;font-family:'Outfit',sans-serif;font-size:13px;padding:11px 13px;border-radius:9px;outline:none;transition:border .18s,background .18s;box-sizing:border-box}
+.auth-in::placeholder{color:#747783}
+.auth-in:focus{border-color:rgba(139,233,255,.45);background:rgba(255,255,255,.06)}
+.auth-in:disabled{opacity:.55;cursor:not-allowed}
+.auth-submit{width:100%;padding:11px 16px;margin-top:4px;border:none;border-radius:9px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#030408;background:linear-gradient(135deg,#d8b56d,#b8923f);box-shadow:0 4px 20px rgba(216,181,109,.22);transition:opacity .18s,transform .13s}
+.auth-submit:hover:not(:disabled){opacity:.92;transform:translateY(-1px)}
+.auth-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.auth-err{min-height:18px;font-size:11.5px;color:var(--red);text-align:center;line-height:1.45;margin:0}
+.auth-hint{font-size:10.5px;color:#747783;line-height:1.5;text-align:center}
 .auth-hint code{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#8be9ff}
 .user-chip{display:flex;align-items:center;gap:6px;padding:3px 6px 3px 3px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);max-width:180px}
 .user-chip img{width:24px;height:24px;border-radius:50%;object-fit:cover}
@@ -635,7 +643,6 @@ textarea#inp{font-size:14px;color:#f8f7f1;padding:10px 13px}
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 <div class="bg"></div>
@@ -645,9 +652,14 @@ textarea#inp{font-size:14px;color:#f8f7f1;padding:10px 13px}
   <div class="auth-card">
     <div class="auth-logo">IH</div>
     <h1>IHMK AI</h1>
-    <p>Gmail-ээр нэвтэрнэ үү. Таны бүх чат түүх аюултай хадгалагдаж, дахин нэвтрэхэд сэргээнэ.</p>
-    <div id="googleBtnWrap"></div>
-    <p class="auth-hint" id="authHint">Нэвтрэхийн тулд доорх Google товчийг ашиглана уу.</p>
+    <p>Имэйл болон нууц үгээр нэвтэрнэ үү. Таны бүх чат түүх аюултай хадгалагдаж, дахин нэвтрэхэд сэргээнэ.</p>
+    <form class="auth-form" id="authForm" onsubmit="return handleEmailLogin(event)">
+      <input class="auth-in" id="authEmail" type="email" autocomplete="email" placeholder="Энд gmail ээ бичнэ үү." required/>
+      <input class="auth-in" id="authPassword" type="password" autocomplete="current-password" placeholder="Энд нууц үгээ бичнэ үү." required/>
+      <p class="auth-err" id="authErr" aria-live="polite"></p>
+      <button class="auth-submit" type="submit" id="authSubmitBtn">Нэвтрэх</button>
+    </form>
+    <p class="auth-hint" id="authHint">Чат түүх <b>Firebase</b>-д хадгалагдана.</p>
   </div>
 </div>
 <div id="ov" onclick="closeAll()"></div>
@@ -860,13 +872,11 @@ const DEEPSEEK_KEY='sk-b0b3c8417e0e4a108dc3bc5231491c93';
 const DEEPSEEK_URL='https://api.deepseek.com/v1/chat/completions';
 
 // ═══════════════════════════════════════
-//  Gmail нэвтрэлт — Firebase (cloud sync)
-//  console.firebase.google.com → Project → Web app config
-//  Authentication → Google идэвхжүүлнэ
+//  Имэйл/нууц үг — Firebase (cloud sync)
+//  console.firebase.google.com → Authentication → Email/Password идэвхжүүлнэ
 //  Firestore Database үүсгэнэ
 // ═══════════════════════════════════════
 const AUTH_CONFIG={
-  googleClientId:'', // Firebase ашиглахгүй бол Google Cloud OAuth Web Client ID
   firebase:{
     apiKey:'AIzaSyAEi0awdRV5fafeWfBnfOjT5kW1F1gm-aE',
     authDomain:'ihmk-ai.firebaseapp.com',
@@ -920,8 +930,6 @@ const SUG={
 function firebaseEnabled(){const f=AUTH_CONFIG.firebase;return!!(f&&f.apiKey&&f.projectId);}
 function userUid(){return currentUser?.uid||currentUser?.sub||null;}
 function sk(suffix){const u=userUid();return u?`ihmk5_${u}_${suffix}`:null;}
-function parseJwt(t){try{const p=t.split('.')[1];return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')));}catch(e){return null;}}
-
 function initFirebase(){
   if(!firebaseEnabled()||typeof firebase==='undefined')return false;
   try{
@@ -1003,7 +1011,9 @@ function updateUserUI(){
   const chip=document.getElementById('userChip');
   if(!currentUser||!chip)return;
   chip.style.display='flex';
-  document.getElementById('userAv').src=currentUser.picture||'';
+  const av=document.getElementById('userAv');
+  if(currentUser.picture){av.src=currentUser.picture;av.style.display='';}
+  else{av.removeAttribute('src');av.style.display='none';}
   document.getElementById('userEmail').textContent=currentUser.email||currentUser.name||'';
   if(pro.name!==currentUser.name&&!document.getElementById('uName').value){
     pro.name=currentUser.name||'';
@@ -1041,82 +1051,107 @@ async function signOutUser(){
   try{localStorage.removeItem('ihmk5_session');}catch(e){}
   sessions={};curId=null;memories=[];pinned=[];
   document.getElementById('userChip').style.display='none';
-  lockApp();renderGoogleButton();chatEl.innerHTML='';
+  lockApp();resetAuthForm();chatEl.innerHTML='';
 }
 
-function renderGoogleButton(){
-  const wrap=document.getElementById('googleBtnWrap');
+const AUTH_WRONG_CREDS=['auth/wrong-password','auth/user-not-found','auth/invalid-credential','auth/invalid-login-credentials'];
+
+function authErrorMessage(e){
+  const code=e?.code||'';
+  if(AUTH_WRONG_CREDS.includes(code))return'Имэйл эсвэл нууц үг буруу байна';
+  const host=location.hostname||'энэ хаяг';
+  const map={
+    'auth/unauthorized-domain':`Firebase → Authorized domains дээр <b>${host}</b> нэмнэ үү.`,
+    'auth/invalid-email':'Имэйл хаяг буруу байна.',
+    'auth/user-disabled':'Энэ бүртгэл идэвхгүй болсон.',
+    'auth/too-many-requests':'Хэт олон оролдлого. Түр хүлээгээд дахин оролдоно уу.',
+    'auth/operation-not-supported-in-this-environment':'file:// дээр ажиллахгүй. localhost эсвэл https ашиглана уу.',
+    'auth/network-request-failed':'Сүлжээний алдаа. Интернэт холболтоо шалгана уу.'
+  };
+  return map[code]||(e?.message||'Тодорхойгүй алдаа');
+}
+
+function setAuthError(msg){
+  const el=document.getElementById('authErr');
+  if(el)el.textContent=msg||'';
+}
+
+function resetAuthForm(){
+  setAuthError('');
+  const pw=document.getElementById('authPassword');
+  if(pw)pw.value='';
+  const btn=document.getElementById('authSubmitBtn');
+  const email=document.getElementById('authEmail');
+  if(btn)btn.disabled=false;
+  if(email)email.disabled=false;
+  if(pw)pw.disabled=false;
+}
+
+function setupAuthForm(){
   const hint=document.getElementById('authHint');
-  if(!wrap)return;
-  wrap.innerHTML='';
-
-  if(firebaseEnabled()&&fbAuth){
-    hint.innerHTML='Gmail-ээр нэвтэрнэ үү · чат <b>Firebase</b>-д хадгалагдана.';
-    const btn=document.createElement('button');
-    btn.className='new-btn';
-    btn.style.cssText='width:auto;padding:10px 20px;margin:0 auto;display:inline-flex';
-    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22 12c0-.68-.06-1.35-.17-2H12v4.08h5.71c-.25 1.35-1 2.49-2.13 3.25v2.68h3.45c2.02-1.86 3.18-4.6 3.18-7.01z"/><path fill="#34A853" d="M12 23c2.88 0 5.29-.95 7.07-2.57l-3.45-2.68c-.95.64-2.17 1.02-3.62 1.02-2.78 0-5.14-1.87-5.98-4.38H1.1v2.77C2.87 20.45 7.2 23 12 23z"/><path fill="#FBBC05" d="M6.02 14.03c-.22-.64-.35-1.32-.35-2.03s.13-1.39.35-2.03V7.2H1.1C.4 8.73 0 10.32 0 12s.4 3.27 1.1 4.8l4.92-3.77z"/><path fill="#EA4335" d="M12 4.75c1.57 0 2.98.54 4.09 1.57l3.07-3.07C17.29 1.09 14.88 0 12 0 7.2 0 2.87 2.55 1.1 6.2l4.92 3.77C6.86 7.62 9.22 4.75 12 4.75z"/></svg> Gmail-ээр нэвтрэх';
-    btn.onclick=async()=>{
-      try{
-        const prov=new firebase.auth.GoogleAuthProvider();
-        await fbAuth.signInWithPopup(prov);
-      }catch(e){toast('Нэвтрэх амжилтгүй: '+e.message);}
-    };
-    wrap.appendChild(btn);
+  if(location.protocol==='file:'){
+    if(hint)hint.innerHTML='<span style="color:var(--red)">file:// дээр ажиллахгүй. <b>localhost</b> эсвэл GitHub Pages ашиглана уу.</span>';
+    document.getElementById('authSubmitBtn')?.setAttribute('disabled','');
     return;
   }
-
-  if(AUTH_CONFIG.googleClientId&&window.google?.accounts?.id){
-    hint.innerHTML='Gmail нэвтрэлт · чат энэ төхөөрөмж дээр хадгалагдана.';
-    google.accounts.id.renderButton(wrap,{
-      theme:'filled_black',size:'large',text:'signin_with',shape:'pill',width:280
-    });
-    return;
+  if(!firebaseEnabled()||!fbAuth){
+    if(hint)hint.innerHTML='<code>AUTH_CONFIG.firebase</code> тохиргоог шалгана уу.';
+    document.getElementById('authSubmitBtn')?.setAttribute('disabled','');
+  }else if(hint){
+    hint.innerHTML='Чат түүх <b>Firebase</b>-д хадгалагдана.';
   }
+}
 
-  hint.innerHTML='Эхлээд <code>AUTH_CONFIG.firebase</code> эсвэл <code>googleClientId</code> тохируулна уу.<br>Firebase: console.firebase.google.com';
-  const btn=document.createElement('button');
-  btn.className='new-btn';
-  btn.textContent='Тохиргоо хийгдсэний дараа дахин ачаална уу';
-  btn.onclick=()=>location.reload();
-  wrap.appendChild(btn);
+async function handleEmailLogin(e){
+  e.preventDefault();
+  if(location.protocol==='file:'){setAuthError('file:// дээр нэвтрэх боломжгүй');return false;}
+  if(!fbAuth){setAuthError('Firebase бэлэн биш');return false;}
+  const email=document.getElementById('authEmail')?.value.trim();
+  const password=document.getElementById('authPassword')?.value||'';
+  const btn=document.getElementById('authSubmitBtn');
+  const emailIn=document.getElementById('authEmail');
+  const pwIn=document.getElementById('authPassword');
+  if(!email||!password){setAuthError('Имэйл болон нууц үгээ оруулна уу');return false;}
+  setAuthError('');
+  if(btn)btn.disabled=true;
+  if(emailIn)emailIn.disabled=true;
+  if(pwIn)pwIn.disabled=true;
+  try{
+    await fbAuth.signInWithEmailAndPassword(email,password);
+  }catch(err){
+    setAuthError(authErrorMessage(err));
+  }finally{
+    if(btn)btn.disabled=false;
+    if(emailIn)emailIn.disabled=false;
+    if(pwIn)pwIn.disabled=false;
+  }
+  return false;
 }
 
 async function initAuth(){
-  if(initFirebase()){
-    fbAuth.onAuthStateChanged(async u=>{
-      if(u)await onUserSignedIn({uid:u.uid,email:u.email,name:u.displayName,picture:u.photoURL});
-      else{currentUser=null;lockApp();renderGoogleButton();}
-      authReady=true;
-    });
+  if(!initFirebase()){
+    lockApp();
+    setupAuthForm();
+    authReady=true;
     return;
   }
-
-  window.handleGoogleCredential=async res=>{
-    const p=parseJwt(res.credential);
-    if(!p)return;
-    await onUserSignedIn({sub:p.sub,email:p.email,name:p.name,picture:p.picture});
-  };
-
-  const tryGis=()=>{
-    if(AUTH_CONFIG.googleClientId&&window.google?.accounts?.id){
-      google.accounts.id.initialize({
-        client_id:AUTH_CONFIG.googleClientId,
-        callback:handleGoogleCredential,
-        auto_select:false
-      });
+  lockApp();
+  setupAuthForm();
+  fbAuth.onAuthStateChanged(async u=>{
+    if(u){
+      const name=u.displayName||(u.email?u.email.split('@')[0]:'');
+      await onUserSignedIn({uid:u.uid,email:u.email,name,picture:u.photoURL||''});
+      setAuthError('');
+    }else{
+      currentUser=null;
+      lockApp();
+      resetAuthForm();
     }
-    const s=JSON.parse(localStorage.getItem('ihmk5_session')||'null');
-    if(s?.uid||s?.sub)onUserSignedIn(s);
-    else lockApp();
-    renderGoogleButton();
     authReady=true;
-  };
-  if(window.google?.accounts?.id)tryGis();
-  else setTimeout(tryGis,800);
+  });
 }
 
-function requireAuth(){if(!userUid()){toast('Эхлээд Gmail-ээр нэвтэрнэ үү');lockApp();return false;}return true;}
+function requireAuth(){if(!userUid()){toast('Эхлээд нэвтэрнэ үү');lockApp();return false;}return true;}
 
 // ── DEEPSEEK API ──
 function resolveModel(hasImage){
@@ -1329,7 +1364,7 @@ function showWelcome(){
     <div class="wl-s">Ultra-premium AI чат интерфэйс. Илүү тайван, илүү цэвэр, илүү нарийвчлалтай хариу өгөхөөр тохируулсан next-generation assistant.</div>
     <div class="plans-row">
       <div class="pc free"><div class="pc-b">IHMK</div><div class="pc-p">Core</div><div class="pc-per">available now</div>
-        <ul class="pc-fl"><li>DeepSeek R1</li><li>Gmail хадгалалт</li><li>Cloud sync</li><li>Voice input</li><li>Smooth streaming</li></ul>
+        <ul class="pc-fl"><li>DeepSeek R1</li><li>Cloud хадгалалт</li><li>Cloud sync</li><li>Voice input</li><li>Smooth streaming</li></ul>
         <button class="pc-cta" onclick="fillInp('Сайн уу IHMK AI, надад товч бөгөөд үнэн зөв хариулаарай.')">Start</button>
       </div>
       <div class="pc plus" onclick="openModal()"><div class="pc-sh"></div><div class="pc-b">⚡ PLUS</div><div class="pc-p">Soon</div><div class="pc-per">coming soon</div>
@@ -1658,7 +1693,7 @@ function addTyping(){
 }
 function addError(msg){
   const w=document.createElement('div');w.className='msg ai';
-  w.innerHTML=`<div class="av" style="background:#1a0000;color:var(--red)">!</div><div class="mbody"><div class="bub" style="border-color:rgba(255,107,107,.16);font-family:'JetBrains Mono',monospace;font-size:11.5px"><span style="color:var(--red)">⚠ ${esc(msg)}</span><br><br><span style="color:var(--mut)">platform.deepseek.com → API key шалгана уу. Gmail нэвтрэлт: Firebase тохиргоо.</span></div></div>`;
+  w.innerHTML=`<div class="av" style="background:#1a0000;color:var(--red)">!</div><div class="mbody"><div class="bub" style="border-color:rgba(255,107,107,.16);font-family:'JetBrains Mono',monospace;font-size:11.5px"><span style="color:var(--red)">⚠ ${esc(msg)}</span><br><br><span style="color:var(--mut)">platform.deepseek.com → API key шалгана уу. Нэвтрэлт: Firebase тохиргоо.</span></div></div>`;
   chatEl.appendChild(w);chatEl.scrollTop=chatEl.scrollHeight;
 }
 
