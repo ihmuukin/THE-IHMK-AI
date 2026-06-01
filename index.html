@@ -629,7 +629,10 @@ textarea#inp{font-size:14px;color:#f8f7f1;padding:10px 13px}
 .auth-submit:hover:not(:disabled){opacity:.92;transform:translateY(-1px)}
 .auth-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .auth-err{min-height:18px;font-size:11.5px;color:var(--red);text-align:center;line-height:1.45;margin:0}
-.auth-hint{font-size:10.5px;color:#747783;line-height:1.5;text-align:center}
+.auth-toggle{margin:4px 0 0;font-size:11.5px;color:#747783;text-align:center;line-height:1.5}
+.auth-toggle button{background:none;border:none;padding:0;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:500;color:#d8b56d;cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .18s}
+.auth-toggle button:hover{color:#f0d48a}
+.auth-hint{font-size:10.5px;color:#747783;line-height:1.5;text-align:center;margin-top:10px}
 .auth-hint code{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#8be9ff}
 .user-chip{display:flex;align-items:center;gap:6px;padding:3px 6px 3px 3px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);max-width:180px}
 .user-chip img{width:24px;height:24px;border-radius:50%;object-fit:cover}
@@ -651,13 +654,17 @@ textarea#inp{font-size:14px;color:#f8f7f1;padding:10px 13px}
 <div id="authGate">
   <div class="auth-card">
     <div class="auth-logo">IH</div>
-    <h1>IHMK AI</h1>
-    <p>Имэйл болон нууц үгээр нэвтэрнэ үү. Таны бүх чат түүх аюултай хадгалагдаж, дахин нэвтрэхэд сэргээнэ.</p>
-    <form class="auth-form" id="authForm" onsubmit="return handleEmailLogin(event)">
+    <h1 id="authTitle">Нэвтрэх</h1>
+    <p id="authSubtitle">Имэйл болон нууц үгээр нэвтэрнэ үү. Таны бүх чат түүх аюултай хадгалагдаж, дахин нэвтрэхэд сэргээнэ.</p>
+    <form class="auth-form" id="authForm" onsubmit="return handleEmailAuth(event)">
       <input class="auth-in" id="authEmail" type="email" autocomplete="email" placeholder="Энд gmail ээ бичнэ үү." required/>
-      <input class="auth-in" id="authPassword" type="password" autocomplete="current-password" placeholder="Энд нууц үгээ бичнэ үү." required/>
+      <input class="auth-in" id="authPassword" type="password" autocomplete="current-password" placeholder="Энд нууц үгээ бичнэ үү." required minlength="6"/>
       <p class="auth-err" id="authErr" aria-live="polite"></p>
       <button class="auth-submit" type="submit" id="authSubmitBtn">Нэвтрэх</button>
+      <p class="auth-toggle" id="authToggleWrap">
+        <span id="authTogglePrefix">Бүртгэл байхгүй юу?</span>
+        <button type="button" id="authToggleBtn" onclick="toggleAuthMode()">Шинээр бүртгүүлэх</button>
+      </p>
     </form>
     <p class="auth-hint" id="authHint">Чат түүх <b>Firebase</b>-д хадгалагдана.</p>
   </div>
@@ -873,7 +880,7 @@ const DEEPSEEK_URL='https://api.deepseek.com/v1/chat/completions';
 
 // ═══════════════════════════════════════
 //  Имэйл/нууц үг — Firebase (cloud sync)
-//  console.firebase.google.com → Authentication → Email/Password идэвхжүүлнэ
+//  console.firebase.google.com → Authentication → Email/Password идэвхжүүлнэ (Sign up)
 //  Firestore Database үүсгэнэ
 // ═══════════════════════════════════════
 const AUTH_CONFIG={
@@ -1054,15 +1061,38 @@ async function signOutUser(){
   lockApp();resetAuthForm();chatEl.innerHTML='';
 }
 
+let authMode='login';
+
 const AUTH_WRONG_CREDS=['auth/wrong-password','auth/user-not-found','auth/invalid-credential','auth/invalid-login-credentials'];
 
-function authErrorMessage(e){
+const AUTH_UI={
+  login:{
+    title:'Нэвтрэх',
+    subtitle:'Имэйл болон нууц үгээр нэвтэрнэ үү. Таны бүх чат түүх аюултай хадгалагдаж, дахин нэвтрэхэд сэргээнэ.',
+    submit:'Нэвтрэх',
+    prefix:'Бүртгэл байхгүй юу?',
+    toggle:'Шинээр бүртгүүлэх',
+    pwAuto:'current-password'
+  },
+  signup:{
+    title:'Бүртгүүлэх',
+    subtitle:'Шинэ бүртгэл үүсгэнэ үү. Бүртгэлийн дараа автоматаар нэвтэрнэ.',
+    submit:'Бүртгэл үүсгэх',
+    prefix:'Аль хэдийн бүртгэлтэй юу?',
+    toggle:'Нэвтрэх',
+    pwAuto:'new-password'
+  }
+};
+
+function authErrorMessage(e,mode){
   const code=e?.code||'';
-  if(AUTH_WRONG_CREDS.includes(code))return'Имэйл эсвэл нууц үг буруу байна';
+  if(code==='auth/email-already-in-use')return'Энэ имэйл хаяг аль хэдийн бүртгэлтэй байна.';
+  if(code==='auth/weak-password')return'Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой.';
+  if(code==='auth/invalid-email')return'Имэйл хаяг буруу байна.';
+  if(AUTH_WRONG_CREDS.includes(code)&&(mode||authMode)==='login')return'Имэйл эсвэл нууц үг буруу байна';
   const host=location.hostname||'энэ хаяг';
   const map={
-    'auth/unauthorized-domain':`Firebase → Authorized domains дээр <b>${host}</b> нэмнэ үү.`,
-    'auth/invalid-email':'Имэйл хаяг буруу байна.',
+    'auth/unauthorized-domain':`Firebase → Authorized domains дээр ${host} нэмнэ үү.`,
     'auth/user-disabled':'Энэ бүртгэл идэвхгүй болсон.',
     'auth/too-many-requests':'Хэт олон оролдлого. Түр хүлээгээд дахин оролдоно уу.',
     'auth/operation-not-supported-in-this-environment':'file:// дээр ажиллахгүй. localhost эсвэл https ашиглана уу.',
@@ -1071,12 +1101,40 @@ function authErrorMessage(e){
   return map[code]||(e?.message||'Тодорхойгүй алдаа');
 }
 
+function isValidEmail(email){
+  return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 function setAuthError(msg){
   const el=document.getElementById('authErr');
   if(el)el.textContent=msg||'';
 }
 
+function applyAuthModeUI(){
+  const ui=AUTH_UI[authMode]||AUTH_UI.login;
+  const title=document.getElementById('authTitle');
+  const sub=document.getElementById('authSubtitle');
+  const btn=document.getElementById('authSubmitBtn');
+  const prefix=document.getElementById('authTogglePrefix');
+  const toggle=document.getElementById('authToggleBtn');
+  const pw=document.getElementById('authPassword');
+  if(title)title.textContent=ui.title;
+  if(sub)sub.textContent=ui.subtitle;
+  if(btn)btn.textContent=ui.submit;
+  if(prefix)prefix.textContent=ui.prefix+' ';
+  if(toggle)toggle.textContent=ui.toggle;
+  if(pw)pw.autocomplete=ui.pwAuto;
+}
+
+function toggleAuthMode(){
+  authMode=authMode==='login'?'signup':'login';
+  setAuthError('');
+  applyAuthModeUI();
+}
+
 function resetAuthForm(){
+  authMode='login';
+  applyAuthModeUI();
   setAuthError('');
   const pw=document.getElementById('authPassword');
   if(pw)pw.value='';
@@ -1085,45 +1143,60 @@ function resetAuthForm(){
   if(btn)btn.disabled=false;
   if(email)email.disabled=false;
   if(pw)pw.disabled=false;
+  document.getElementById('authToggleBtn')?.removeAttribute('disabled');
 }
 
 function setupAuthForm(){
+  applyAuthModeUI();
   const hint=document.getElementById('authHint');
   if(location.protocol==='file:'){
     if(hint)hint.innerHTML='<span style="color:var(--red)">file:// дээр ажиллахгүй. <b>localhost</b> эсвэл GitHub Pages ашиглана уу.</span>';
     document.getElementById('authSubmitBtn')?.setAttribute('disabled','');
+    document.getElementById('authToggleBtn')?.setAttribute('disabled','');
     return;
   }
   if(!firebaseEnabled()||!fbAuth){
     if(hint)hint.innerHTML='<code>AUTH_CONFIG.firebase</code> тохиргоог шалгана уу.';
     document.getElementById('authSubmitBtn')?.setAttribute('disabled','');
+    document.getElementById('authToggleBtn')?.setAttribute('disabled','');
   }else if(hint){
     hint.innerHTML='Чат түүх <b>Firebase</b>-д хадгалагдана.';
   }
 }
 
-async function handleEmailLogin(e){
+function setAuthLoading(on){
+  const btn=document.getElementById('authSubmitBtn');
+  const email=document.getElementById('authEmail');
+  const pw=document.getElementById('authPassword');
+  const toggle=document.getElementById('authToggleBtn');
+  if(btn)btn.disabled=on;
+  if(email)email.disabled=on;
+  if(pw)pw.disabled=on;
+  if(toggle)toggle.disabled=on;
+}
+
+async function handleEmailAuth(e){
   e.preventDefault();
-  if(location.protocol==='file:'){setAuthError('file:// дээр нэвтрэх боломжгүй');return false;}
+  if(location.protocol==='file:'){setAuthError('file:// дээр ажиллахгүй');return false;}
   if(!fbAuth){setAuthError('Firebase бэлэн биш');return false;}
   const email=document.getElementById('authEmail')?.value.trim();
   const password=document.getElementById('authPassword')?.value||'';
-  const btn=document.getElementById('authSubmitBtn');
-  const emailIn=document.getElementById('authEmail');
-  const pwIn=document.getElementById('authPassword');
+  const mode=authMode;
   if(!email||!password){setAuthError('Имэйл болон нууц үгээ оруулна уу');return false;}
+  if(!isValidEmail(email)){setAuthError('Имэйл хаяг буруу байна.');return false;}
+  if(mode==='signup'&&password.length<6){setAuthError('Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой.');return false;}
   setAuthError('');
-  if(btn)btn.disabled=true;
-  if(emailIn)emailIn.disabled=true;
-  if(pwIn)pwIn.disabled=true;
+  setAuthLoading(true);
   try{
-    await fbAuth.signInWithEmailAndPassword(email,password);
+    if(mode==='signup'){
+      await fbAuth.createUserWithEmailAndPassword(email,password);
+    }else{
+      await fbAuth.signInWithEmailAndPassword(email,password);
+    }
   }catch(err){
-    setAuthError(authErrorMessage(err));
+    setAuthError(authErrorMessage(err,mode));
   }finally{
-    if(btn)btn.disabled=false;
-    if(emailIn)emailIn.disabled=false;
-    if(pwIn)pwIn.disabled=false;
+    setAuthLoading(false);
   }
   return false;
 }
