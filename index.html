@@ -425,12 +425,231 @@ textarea#inp::placeholder{color:var(--mut2)}
 .a-lbl{font-size:10px;color:var(--mut);margin-top:2px}
 
 @media(max-width:600px){.h-c{display:none}.plans-row{gap:8px}.pc{width:135px;padding:12px 10px}.mps{flex-direction:column}header{padding:8px 10px}#sp{width:100%}}
+
+/* ── IHMK AI PREMIUM REDESIGN OVERRIDE ── */
+:root{
+  --bg:#020204;--s1:rgba(12,13,18,.76);--s2:rgba(20,22,30,.58);--s3:rgba(30,33,43,.72);--s4:rgba(45,49,62,.78);
+  --b1:rgba(255,255,255,.075);--b2:rgba(255,255,255,.12);--b3:rgba(255,255,255,.2);
+  --gold:#d8b56d;--g2:#f3dd9d;--cyan:#8be9ff;--purple:#a99cff;
+  --green:#58f0ba;--red:#ff7d86;--blue:#91bbff;
+  --txt:#f6f4ee;--mut:#a0a0ad;--mut2:#6f717c;
+  --ubg:linear-gradient(135deg,rgba(216,181,109,.17),rgba(139,233,255,.07));
+  --abg:linear-gradient(145deg,rgba(255,255,255,.072),rgba(255,255,255,.028));
+}
+html{background:#020204}
+body{
+  background:
+    radial-gradient(circle at 50% -10%,rgba(139,233,255,.1),transparent 38%),
+    radial-gradient(circle at 88% 18%,rgba(169,156,255,.1),transparent 32%),
+    linear-gradient(160deg,#020204 0%,#07080c 44%,#121319 100%);
+  letter-spacing:0;
+}
+body::before,body::after{
+  content:'';position:fixed;pointer-events:none;z-index:0;border:1px solid rgba(255,255,255,.055);
+  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(139,233,255,.03));
+  filter:blur(.2px);opacity:.55;transform-style:preserve-3d;
+}
+body::before{width:140px;height:140px;right:9vw;top:18vh;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);animation:floatGeo 18s ease-in-out infinite}
+body::after{width:94px;height:94px;left:8vw;bottom:16vh;border-radius:50%;animation:floatGeo 22s ease-in-out infinite reverse}
+.bg{overflow:hidden;background:linear-gradient(145deg,#020204,#090a0f 52%,#16171d)}
+.bg::before{
+  inset:-18%;opacity:1;filter:blur(28px);
+  background:
+    radial-gradient(ellipse 46% 28% at 50% 0%,rgba(243,221,157,.12),transparent 62%),
+    radial-gradient(ellipse 38% 24% at 18% 30%,rgba(139,233,255,.08),transparent 66%),
+    radial-gradient(ellipse 42% 28% at 83% 44%,rgba(169,156,255,.095),transparent 64%),
+    linear-gradient(180deg,rgba(255,255,255,.035),transparent 38%);
+  animation:premiumMist 20s ease-in-out infinite alternate;
+}
+.bg::after{
+  opacity:.75;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.24) 0 1px,transparent 1.7px),
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:110px 110px,92px 92px,92px 92px;
+  mask-image:linear-gradient(to bottom,transparent,black 18%,black 78%,transparent);
+  animation:particleDrift 32s linear infinite;
+}
+@keyframes premiumMist{from{transform:translate3d(-1%,0,0) scale(1)}to{transform:translate3d(1.5%,1%,0) scale(1.06)}}
+@keyframes particleDrift{from{background-position:0 0,0 0,0 0}to{background-position:220px -260px,92px 92px,-92px 92px}}
+@keyframes floatGeo{0%,100%{transform:translate3d(0,0,0) rotate(0deg);opacity:.34}50%{transform:translate3d(0,-24px,0) rotate(16deg);opacity:.62}}
+
+#app{height:100dvh;isolation:isolate}
+header{
+  width:min(1120px,calc(100vw - 32px));margin:14px auto 0;padding:10px 12px;
+  border:1px solid rgba(255,255,255,.115);border-radius:8px;
+  background:linear-gradient(180deg,rgba(20,22,30,.72),rgba(7,8,12,.52));
+  box-shadow:0 24px 80px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.brand .lt,.sb-name,.sp-title,.wl-t,.mt2{font-family:'Outfit',sans-serif;font-weight:600;letter-spacing:.08em}
+.brand .lt{font-size:16px;-webkit-text-fill-color:unset;color:#f8f3e4;background:none}
+.brand .dot{background:var(--cyan);box-shadow:0 0 18px rgba(139,233,255,.82)}
+.mbtn,.icbtn,.sp-x,.hbtn,.tbb,.mx{border-radius:8px;background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.11);backdrop-filter:blur(20px)}
+.mbtn:hover,.icbtn:hover,.sp-x:hover,.hbtn:hover,.tbb:hover,.mx:hover{background:rgba(255,255,255,.1);box-shadow:0 0 22px rgba(139,233,255,.08)}
+select#mdl{
+  min-width:214px;padding:7px 12px;border-radius:8px;
+  background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.13);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+}
+.stat{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.11);color:#c7c9d2}
+.sd{animation:onlinePulse 1.8s ease-in-out infinite}
+@keyframes onlinePulse{0%,100%{box-shadow:0 0 0 0 rgba(88,240,186,.38),0 0 10px rgba(88,240,186,.65)}50%{box-shadow:0 0 0 6px rgba(88,240,186,0),0 0 18px rgba(88,240,186,.95)}}
+.upg,.new-btn,#snd,.pc-cta,.mp-btn{
+  border-radius:8px;background:linear-gradient(135deg,#f5dda2,#b99049 48%,#7ee7ff);
+  color:#08090c;box-shadow:0 12px 34px rgba(216,181,109,.16);
+}
+.upg:hover,.new-btn:hover,#snd:hover:not(:disabled),.pc-cta:hover,.mp-btn:hover{opacity:1;filter:saturate(1.08);transform:translateY(-1px)}
+#chat{
+  width:min(960px,100%);margin:0 auto;padding:28px 18px 16px;gap:18px;
+  scroll-padding-bottom:160px;
+}
+#wl{justify-content:center;min-height:100%;padding:28px 16px 18px}
+.wl-r{
+  width:92px;height:92px;border-radius:8px;margin-bottom:24px;
+  background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.025));
+  border:1px solid rgba(255,255,255,.13);box-shadow:0 32px 90px rgba(0,0,0,.38),0 0 60px rgba(139,233,255,.08),inset 0 1px 0 rgba(255,255,255,.1);
+}
+.wl-r::before{border-radius:8px;border-color:rgba(139,233,255,.12);inset:-10px}
+.wl-i{font-family:'Outfit',sans-serif;font-weight:600;letter-spacing:.1em;color:#f5ead0;background:none;-webkit-text-fill-color:unset}
+.wl-t{
+  font-size:clamp(32px,7vw,78px);line-height:.92;margin-bottom:14px;max-width:900px;
+  background:linear-gradient(100deg,#fff 0%,#d7d9e3 45%,#8be9ff 70%,#f3dd9d 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.wl-s{max-width:620px;font-size:15px;color:#b8bac5;line-height:1.75;margin-bottom:28px}
+.plans-row{gap:12px;margin-bottom:26px}
+.pc,.mp,.tool-card,.cmp-bub,.tmpl-card,.a-card{
+  border-radius:8px;background:linear-gradient(145deg,rgba(255,255,255,.074),rgba(255,255,255,.027));
+  border:1px solid rgba(255,255,255,.105);backdrop-filter:blur(24px);
+  box-shadow:0 20px 60px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.pc{width:168px;min-height:206px;cursor:default}
+.pc:hover,.mp:hover{transform:translateY(-3px);box-shadow:0 28px 72px rgba(0,0,0,.34),0 0 34px rgba(139,233,255,.07)}
+.pc.plus,.mp.plus{background:linear-gradient(145deg,rgba(18,43,54,.72),rgba(9,12,17,.68));border-color:rgba(139,233,255,.22)}
+.pc.pro,.mp.pro{background:linear-gradient(145deg,rgba(46,34,16,.66),rgba(10,10,12,.7));border-color:rgba(216,181,109,.24)}
+.pc-b{border-radius:999px;letter-spacing:.14em}
+.pc-p{font-family:'Outfit',sans-serif;font-weight:600;font-size:25px;letter-spacing:0}
+.pc-per{text-transform:uppercase;letter-spacing:.12em}
+.pc-fl li{line-height:1.45}.pc-fl li::before{content:'+'}
+.pc.plus .pc-cta,.mp.plus .mp-btn{background:linear-gradient(135deg,#8be9ff,#5d8dff);color:#05070a}
+.pc.pro .pc-cta,.mp.pro .mp-btn{background:linear-gradient(135deg,#f3dd9d,#b99049);color:#08090c}
+.sugs{max-width:680px;gap:8px}
+.sug,.tool-pill,.ssc{
+  border-radius:999px;background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.11);
+  color:#b9bbc7;backdrop-filter:blur(18px)
+}
+.sug:hover,.tool-pill:hover,.ssc:hover{border-color:rgba(139,233,255,.34);color:#edfaff;background:rgba(139,233,255,.075)}
+.msg{max-width:900px;gap:12px;animation:msgIn .34s cubic-bezier(.2,.8,.2,1) both}
+.av{
+  border-radius:8px;background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.1);box-shadow:0 12px 34px rgba(0,0,0,.24),0 0 24px rgba(139,233,255,.08);
+}
+.mbody{max-width:min(720px,calc(100vw - 90px))}
+.bub{
+  border-radius:8px;padding:12px 15px;font-size:14px;line-height:1.78;
+  backdrop-filter:blur(24px);box-shadow:0 18px 54px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.msg.user .bub{border-top-right-radius:8px;border-color:rgba(216,181,109,.18);background:linear-gradient(135deg,rgba(216,181,109,.17),rgba(139,233,255,.06))}
+.msg.ai .bub{border-top-left-radius:8px;border-color:rgba(255,255,255,.1);background:var(--abg)}
+.bub h1,.bub h2,.bub h3{font-family:'Outfit',sans-serif;letter-spacing:0;color:#f3dd9d}
+.bub li::marker{color:var(--cyan)}
+.cw,.mw{border-radius:8px;background:rgba(5,7,11,.82);border-color:rgba(255,255,255,.12)}
+#thinking{
+  width:min(960px,calc(100vw - 32px));margin:10px auto 0;padding:10px 14px;border:1px solid rgba(139,233,255,.12);
+  border-radius:8px;background:rgba(139,233,255,.045);backdrop-filter:blur(18px)
+}
+.think-txt{color:#c7f6ff}.think-anim span{background:var(--cyan);box-shadow:0 0 16px rgba(139,233,255,.78)}
+footer{
+  width:min(880px,calc(100vw - 32px));margin:0 auto 16px;padding:10px 12px calc(10px + var(--safe));
+  border:1px solid rgba(255,255,255,.12);border-radius:8px;
+  background:linear-gradient(180deg,rgba(18,20,28,.72),rgba(7,8,12,.6));
+  box-shadow:0 24px 90px rgba(0,0,0,.38),0 0 46px rgba(139,233,255,.06),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.iw{
+  border-radius:8px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.13);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)
+}
+.iw.focused{border-color:rgba(139,233,255,.42);box-shadow:0 0 0 1px rgba(139,233,255,.18),0 0 36px rgba(139,233,255,.1)}
+.itb{border-bottom-color:rgba(255,255,255,.08)}
+textarea#inp{font-size:14px;color:#f8f7f1;padding:10px 13px}
+#snd{width:44px;height:44px}
+#snd svg{fill:#05070a}
+.fhint{color:#747783;letter-spacing:.02em}
+#sb,#sp,.kb-box,.mb,#cmdMenu{
+  background:linear-gradient(180deg,rgba(17,19,27,.86),rgba(7,8,12,.82));
+  border-color:rgba(255,255,255,.12);backdrop-filter:blur(28px);
+  box-shadow:0 24px 90px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.06);
+}
+#modal{background:rgba(0,0,0,.72);backdrop-filter:blur(18px)}
+.mb{border-radius:8px;max-width:540px}
+.mt2{font-size:28px;background:none;-webkit-text-fill-color:unset;color:#f6f4ee}
+.ms2{font-size:13px;color:#b8bac5}
+.mp-pr{font-family:'Outfit',sans-serif;font-size:24px;letter-spacing:0}
+#toast{border-radius:8px;background:rgba(20,22,30,.9);border-color:rgba(255,255,255,.13);backdrop-filter:blur(20px)}
+@media(max-width:760px){
+  header{width:calc(100vw - 20px);margin-top:10px}
+  footer{width:calc(100vw - 20px);margin-bottom:10px}
+  #chat{padding:20px 10px 12px}
+  .wl-t{font-size:clamp(30px,12vw,52px)}
+  .plans-row{display:grid;grid-template-columns:1fr;width:100%;max-width:330px}
+  .pc{width:100%;min-height:auto}
+  .h-r{gap:5px}.upg{display:none}.stat span{display:none}
+  .mbody{max-width:calc(100vw - 78px)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+}
+
+/* ── AUTH GATE ── */
+#authGate{
+  position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(139,233,255,.08),transparent 55%),rgba(3,4,8,.94);
+  backdrop-filter:blur(24px)
+}
+#authGate.off{display:none}
+.auth-card{
+  width:min(400px,100%);padding:36px 28px 28px;text-align:center;border-radius:8px;
+  background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 32px 90px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08)
+}
+.auth-logo{
+  width:56px;height:56px;margin:0 auto 18px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-family:'Outfit',sans-serif;font-weight:600;font-size:18px;color:#f6f4ee;
+  background:linear-gradient(145deg,rgba(139,233,255,.2),rgba(216,181,109,.12));border:1px solid rgba(255,255,255,.14)
+}
+.auth-card h1{font-family:'Outfit',sans-serif;font-size:26px;font-weight:600;letter-spacing:-.03em;color:#f6f4ee;margin-bottom:8px}
+.auth-card>p{font-size:13px;color:#b8bac5;line-height:1.6;margin-bottom:22px}
+#googleBtnWrap{display:flex;justify-content:center;min-height:44px;margin-bottom:14px}
+.auth-hint{font-size:10.5px;color:#747783;line-height:1.5}
+.auth-hint code{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#8be9ff}
+.user-chip{display:flex;align-items:center;gap:6px;padding:3px 6px 3px 3px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);max-width:180px}
+.user-chip img{width:24px;height:24px;border-radius:50%;object-fit:cover}
+.user-chip .ue{font-size:10px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:90px}
+.user-chip .logout{width:22px;height:22px;border-radius:6px;border:none;background:rgba(255,255,255,.06);color:var(--mut);cursor:pointer;font-size:11px;flex-shrink:0}
+.user-chip .logout:hover{color:var(--txt);background:rgba(255,255,255,.1)}
+#app.locked{visibility:hidden;pointer-events:none;height:0;overflow:hidden}
+.sync-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);opacity:0;transition:opacity .3s}
+.sync-dot.on{opacity:1;animation:tb 1s ease-in-out infinite}
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 <div class="bg"></div>
 <div id="lb" onclick="this.classList.remove('on')"><img id="lbI" src="" alt=""/></div>
 <div id="toast"></div>
+<div id="authGate">
+  <div class="auth-card">
+    <div class="auth-logo">IH</div>
+    <h1>IHMK AI</h1>
+    <p>Gmail-ээр нэвтэрнэ үү. Таны бүх чат түүх аюултай хадгалагдаж, дахин нэвтрэхэд сэргээнэ.</p>
+    <div id="googleBtnWrap"></div>
+    <p class="auth-hint" id="authHint">Нэвтрэхийн тулд доорх Google товчийг ашиглана уу.</p>
+  </div>
+</div>
 <div id="ov" onclick="closeAll()"></div>
 
 <!-- KEYBOARD HELP -->
@@ -523,7 +742,7 @@ textarea#inp::placeholder{color:var(--mut2)}
 </div>
 
 <!-- APP -->
-<div id="app">
+<div id="app" class="locked">
   <header>
     <div class="h-l">
       <button class="mbtn" onclick="toggleSB()"><span></span><span></span><span></span></button>
@@ -532,17 +751,21 @@ textarea#inp::placeholder{color:var(--mut2)}
     </div>
     <div class="h-c">
       <select id="mdl">
-        <option value="meta-llama/llama-4-scout-17b-16e-instruct">IHMK 2.1</option>
-        <option value="meta-llama/llama-4-maverick-17b-128e-instruct">Llama 4 Maverick</option>
-        <option value="llama-3.2-11b-vision-preview">Llama 3.2 Vision</option>
-        <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
-        <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
-        <option value="gemma2-9b-it">Gemma 2 9B</option>
+        <option value="deepseek-reasoner">DeepSeek R1 · Reasoning</option>
+        <option value="deepseek-chat">DeepSeek V3 · Fast</option>
+        <option value="coming-plus" disabled>IHMK Plus · Coming Soon</option>
+        <option value="coming-pro" disabled>IHMK Pro · Coming Soon</option>
       </select>
     </div>
     <div class="h-r">
+      <div class="sync-dot" id="syncDot" title="Cloud sync"></div>
+      <div class="user-chip" id="userChip" style="display:none">
+        <img id="userAv" src="" alt="" width="24" height="24"/>
+        <span class="ue" id="userEmail"></span>
+        <button class="logout" onclick="signOutUser()" title="Гарах">✕</button>
+      </div>
       <div class="stat"><div class="sd"></div><span>Online</span></div>
-      <button class="upg" onclick="openModal()">✦ Upgrade</button>
+      <button class="upg" onclick="openModal()">✦ Plans</button>
       <button class="icbtn" onclick="togglePinned()" title="Pinned messages">📌</button>
       <button class="icbtn" onclick="document.getElementById('kbHelp').classList.add('on')" title="Keyboard shortcuts">⌨</button>
       <button class="icbtn" onclick="openSP()" title="Settings">
@@ -586,7 +809,7 @@ textarea#inp::placeholder{color:var(--mut2)}
     </div>
 
     <div id="smartSugs"></div>
-    <div id="imgPrev"><img id="iPT" src="" alt=""/><span style="font-size:11px;color:var(--mut)">Image ready · Vision model active</span><button class="rmi" onclick="removeImg()">✕</button></div>
+    <div id="imgPrev"><img id="iPT" src="" alt=""/><span style="font-size:11px;color:var(--mut)">Зураг хавсаргасан · R1-д текстээр тайлбарлана</span><button class="rmi" onclick="removeImg()">✕</button></div>
 
     <div class="inp-row">
       <div class="iw" id="iw">
@@ -599,7 +822,7 @@ textarea#inp::placeholder{color:var(--mut2)}
           <button class="tbb" title="Compare mode" id="cmpBtn" onclick="toggleCompare()">⚖</button>
           <div class="cc" id="cc"></div>
         </div>
-        <textarea id="inp" placeholder="Ask IHMK AI…  ( / for commands,  ? for shortcuts)" rows="1"></textarea>
+      <textarea id="inp" placeholder="Ask IHMK AI…  precise, calm, cinematic." rows="1"></textarea>
       </div>
       <button id="snd" onclick="send()">
         <svg viewBox="0 0 24 24"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
@@ -613,16 +836,16 @@ textarea#inp::placeholder{color:var(--mut2)}
 <div id="modal" onclick="if(event.target===this)closeModal()">
   <div class="mb">
     <button class="mx" onclick="closeModal()">✕</button>
-    <div class="mt2">UPGRADE PLAN</div>
-    <div class="ms2">Unlock the full power of IHMK AI with premium models and priority access.</div>
+    <div class="mt2">IHMK AI PLANS</div>
+    <div class="ms2">Plus болон Pro загварууд удахгүй нээгдэнэ. Одоогоор үндсэн IHMK AI-г илүү хурдан, цэвэр, нарийвчлалтай болголоо.</div>
     <div class="mps">
-      <div class="mp plus"><div class="mp-lb">IHMK PLUS</div><div class="mp-pr">32,850MNT<span style="font-size:11px;opacity:.5">/mo</span></div>
-        <ul><li>Priority speed</li><li>GPT-4o access</li><li>Unlimited history</li><li>Advanced models</li><li>Early features</li></ul>
-        <button class="mp-btn" onclick="selPlan('PLUS')">Get IHMK PLUS comig soon</button>
+      <div class="mp plus"><div class="mp-lb">IHMK PLUS</div><div class="mp-pr">Coming Soon</div>
+        <ul><li>Priority speed</li><li>Premium model routing</li><li>Unlimited history</li><li>Advanced tools</li><li>Early features</li></ul>
+        <button class="mp-btn" onclick="selPlan('PLUS')">Coming Soon</button>
       </div>
-      <div class="mp pro"><div class="mp-lb">IHMK PRO</div><div class="mp-pr">69,350NMT<span style="font-size:11px;opacity:.5">/mo</span></div>
-        <ul><li>Everything in PLUS</li><li>GPT-4o + Claude</li><li>Custom persona</li><li>API integration</li><li>Priority support</li></ul>
-        <button class="mp-btn" onclick="selPlan('PRO')">Get IHMK PRO comig soon</button>
+      <div class="mp pro"><div class="mp-lb">IHMK PRO</div><div class="mp-pr">Coming Soon</div>
+        <ul><li>Everything in PLUS</li><li>Deep research mode</li><li>Custom persona</li><li>API integration</li><li>Priority support</li></ul>
+        <button class="mp-btn" onclick="selPlan('PRO')">Coming Soon</button>
       </div>
     </div>
   </div>
@@ -630,10 +853,29 @@ textarea#inp::placeholder{color:var(--mut2)}
 
 <script>
 // ═══════════════════════════════════════
-//  ⚠️ ЭНЭД GROQ API KEY ТАВИНА
-//  console.groq.com → API Keys
+//  DeepSeek API (R1 = deepseek-reasoner)
+//  platform.deepseek.com → API Keys
 // ═══════════════════════════════════════
-const KEY='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';
+const DEEPSEEK_KEY='sk-b0b3c8417e0e4a108dc3bc5231491c93';
+const DEEPSEEK_URL='https://api.deepseek.com/v1/chat/completions';
+
+// ═══════════════════════════════════════
+//  Gmail нэвтрэлт — Firebase (cloud sync)
+//  console.firebase.google.com → Project → Web app config
+//  Authentication → Google идэвхжүүлнэ
+//  Firestore Database үүсгэнэ
+// ═══════════════════════════════════════
+const AUTH_CONFIG={
+  googleClientId:'', // Firebase ашиглахгүй бол Google Cloud OAuth Web Client ID
+  firebase:{
+    apiKey:'AIzaSyAEi0awdRV5fafeWfBnfOjT5kW1F1gm-aE',
+    authDomain:'ihmk-ai.firebaseapp.com',
+    projectId:'ihmk-ai',
+    storageBucket:'ihmk-ai.firebasestorage.app',
+    messagingSenderId:'522049165137',
+    appId:'1:522049165137:web:a7b5574076b98a9b71a570'
+  }
+};
 
 // Init Mermaid
 mermaid.initialize({startOnLoad:false,theme:'dark',themeVariables:{primaryColor:'#f0b429',primaryTextColor:'#eeeef8',primaryBorderColor:'#f0b42940',lineColor:'#6b6b90',background:'#0e0e18',mainBkg:'#14141f'}});
@@ -643,7 +885,8 @@ marked.setOptions({breaks:true,gfm:true});
 let sessions={},curId=null,busy=false,sbOpen=false,spOpen=false;
 let memories=[],pinned=[],pendImg=null,pendImgD=null;
 let rec=null,recing=false,compareMode=false,privateMode=false;
-let pro={name:'',prof:'',lang:'',prompt:'',persona:'default',temp:0.7,maxT:2000,tts:false,stream:true,think:true};
+let pro={name:'',prof:'',lang:'',prompt:'',persona:'default',temp:0.35,maxT:2400,tts:false,stream:true,think:true};
+let currentUser=null,authReady=false,fbApp=null,fbAuth=null,fbDb=null,cloudSaveTimer=null,reasoningBuf='';
 
 const chatEl=document.getElementById('chat');
 const inpEl=document.getElementById('inp');
@@ -656,11 +899,11 @@ const msEl=document.getElementById('ms');
 const iw=document.getElementById('iw');
 
 const PERSONAS={
-  default:'You are IHMK AI — smart, friendly, and helpful.',
-  teacher:'You are IHMK AI acting as a patient, thorough teacher. Explain everything step by step with examples.',
-  hacker:'You are IHMK AI as an elite developer. Use technical terms, be concise, show code first.',
-  coach:'You are IHMK AI as a business coach. Focus on strategy, ROI, and actionable advice.',
-  friend:'You are IHMK AI as a casual, witty friend. Keep it fun, use humor, be relatable.',
+  default:'You are IHMK AI — a precise, calm, premium AI assistant. Be useful, accurate, and elegantly concise.',
+  teacher:'You are IHMK AI acting as a patient, thorough teacher. Explain step by step, define terms, and verify the learner understood the core idea.',
+  hacker:'You are IHMK AI as an elite developer. Write production-quality code: correct types, edge cases, error handling, and brief comments only where non-obvious. Prefer complete runnable examples over fragments.',
+  coach:'You are IHMK AI as a business coach. Focus on strategy, tradeoffs, ROI, execution steps, and clear decision criteria.',
+  friend:'You are IHMK AI as a thoughtful companion. Keep the tone natural and warm while staying accurate and grounded.',
   custom:''
 };
 const SUG={
@@ -673,12 +916,262 @@ const SUG={
   'ai':['AI explain','ML intro','neural network'],
 };
 
+// ── AUTH & STORAGE ──
+function firebaseEnabled(){const f=AUTH_CONFIG.firebase;return!!(f&&f.apiKey&&f.projectId);}
+function userUid(){return currentUser?.uid||currentUser?.sub||null;}
+function sk(suffix){const u=userUid();return u?`ihmk5_${u}_${suffix}`:null;}
+function parseJwt(t){try{const p=t.split('.')[1];return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')));}catch(e){return null;}}
+
+function initFirebase(){
+  if(!firebaseEnabled()||typeof firebase==='undefined')return false;
+  try{
+    if(!fbApp)fbApp=firebase.apps?.length?firebase.app():firebase.initializeApp(AUTH_CONFIG.firebase);
+    fbAuth=firebase.auth();
+    fbDb=firebase.firestore();
+    return true;
+  }catch(e){console.warn('Firebase init failed',e);return false;}
+}
+
+async function loadUserData(){
+  const uid=userUid();if(!uid)return;
+  if(fbDb){
+    try{
+      document.getElementById('syncDot')?.classList.add('on');
+      const doc=await fbDb.collection('users').doc(uid).collection('data').doc('app').get();
+      if(doc.exists){
+        const d=doc.data();
+        if(d.sessions)sessions=d.sessions;
+        if(d.pro)pro=Object.assign(pro,d.pro);
+        if(d.pinned)pinned=d.pinned;
+      }else await migrateLegacyToCloud(uid);
+      document.getElementById('syncDot')?.classList.remove('on');
+    }catch(e){
+      document.getElementById('syncDot')?.classList.remove('on');
+      console.warn('Firestore load',e);
+      loadLocalUserData();
+    }
+  }else loadLocalUserData();
+  if(!pro.maxT||pro.maxT<2200)pro.maxT=2400;
+  if(pro.temp===0.7)pro.temp=0.35;
+  loadProUI();renderHist();showWelcome();updateAnalytics();
+}
+
+function loadLocalUserData(){
+  try{sessions=JSON.parse(localStorage.getItem(sk('sessions'))||'{}');}catch(e){sessions={};}
+  try{pro=Object.assign(pro,JSON.parse(localStorage.getItem(sk('pro'))||'{}'));}catch(e){}
+  try{pinned=JSON.parse(localStorage.getItem(sk('pin'))||'[]');}catch(e){pinned=[];}
+}
+
+async function migrateLegacyToCloud(uid){
+  try{
+    const leg=JSON.parse(localStorage.getItem('ihmk4')||'{}');
+    if(Object.keys(leg).length)sessions=leg;
+  }catch(e){}
+  if(fbDb&&Object.keys(sessions).length){
+    await fbDb.collection('users').doc(uid).collection('data').doc('app').set({
+      sessions,pro,pinned,updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    },{merge:true});
+  }
+}
+
+function saveLocalUserData(){
+  const uid=userUid();if(!uid||privateMode)return;
+  try{
+    localStorage.setItem(sk('sessions'),JSON.stringify(sessions));
+    localStorage.setItem(sk('pro'),JSON.stringify(pro));
+    localStorage.setItem(sk('pin'),JSON.stringify(pinned));
+  }catch(e){}
+}
+
+async function saveCloudUserData(){
+  const uid=userUid();if(!uid||privateMode||!fbDb)return;
+  try{
+    document.getElementById('syncDot')?.classList.add('on');
+    await fbDb.collection('users').doc(uid).collection('data').doc('app').set({
+      sessions,pro,pinned,updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    },{merge:true});
+  }catch(e){console.warn('Firestore save',e);}
+  finally{document.getElementById('syncDot')?.classList.remove('on');}
+}
+
+function scheduleCloudSave(){
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer=setTimeout(()=>saveCloudUserData(),600);
+}
+
+function updateUserUI(){
+  const chip=document.getElementById('userChip');
+  if(!currentUser||!chip)return;
+  chip.style.display='flex';
+  document.getElementById('userAv').src=currentUser.picture||'';
+  document.getElementById('userEmail').textContent=currentUser.email||currentUser.name||'';
+  if(pro.name!==currentUser.name&&!document.getElementById('uName').value){
+    pro.name=currentUser.name||'';
+    document.getElementById('uName').value=pro.name;
+  }
+}
+
+function unlockApp(){
+  document.getElementById('authGate')?.classList.add('off');
+  document.getElementById('app')?.classList.remove('locked');
+}
+
+function lockApp(){
+  document.getElementById('authGate')?.classList.remove('off');
+  document.getElementById('app')?.classList.add('locked');
+}
+
+async function onUserSignedIn(user){
+  currentUser={
+    uid:user.uid||user.sub,
+    email:user.email,
+    name:user.name||user.displayName||'',
+    picture:user.picture||user.photoURL||''
+  };
+  try{localStorage.setItem('ihmk5_session',JSON.stringify(currentUser));}catch(e){}
+  updateUserUI();unlockApp();
+  await loadUserData();
+  toast('Тавтай морил, '+(currentUser.name||currentUser.email).split(' ')[0]+'!');
+}
+
+async function signOutUser(){
+  if(!confirm('Гарах уу?'))return;
+  try{if(fbAuth)await fbAuth.signOut();}catch(e){}
+  currentUser=null;
+  try{localStorage.removeItem('ihmk5_session');}catch(e){}
+  sessions={};curId=null;memories=[];pinned=[];
+  document.getElementById('userChip').style.display='none';
+  lockApp();renderGoogleButton();chatEl.innerHTML='';
+}
+
+function renderGoogleButton(){
+  const wrap=document.getElementById('googleBtnWrap');
+  const hint=document.getElementById('authHint');
+  if(!wrap)return;
+  wrap.innerHTML='';
+
+  if(firebaseEnabled()&&fbAuth){
+    hint.innerHTML='Gmail-ээр нэвтэрнэ үү · чат <b>Firebase</b>-д хадгалагдана.';
+    const btn=document.createElement('button');
+    btn.className='new-btn';
+    btn.style.cssText='width:auto;padding:10px 20px;margin:0 auto;display:inline-flex';
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22 12c0-.68-.06-1.35-.17-2H12v4.08h5.71c-.25 1.35-1 2.49-2.13 3.25v2.68h3.45c2.02-1.86 3.18-4.6 3.18-7.01z"/><path fill="#34A853" d="M12 23c2.88 0 5.29-.95 7.07-2.57l-3.45-2.68c-.95.64-2.17 1.02-3.62 1.02-2.78 0-5.14-1.87-5.98-4.38H1.1v2.77C2.87 20.45 7.2 23 12 23z"/><path fill="#FBBC05" d="M6.02 14.03c-.22-.64-.35-1.32-.35-2.03s.13-1.39.35-2.03V7.2H1.1C.4 8.73 0 10.32 0 12s.4 3.27 1.1 4.8l4.92-3.77z"/><path fill="#EA4335" d="M12 4.75c1.57 0 2.98.54 4.09 1.57l3.07-3.07C17.29 1.09 14.88 0 12 0 7.2 0 2.87 2.55 1.1 6.2l4.92 3.77C6.86 7.62 9.22 4.75 12 4.75z"/></svg> Gmail-ээр нэвтрэх';
+    btn.onclick=async()=>{
+      try{
+        const prov=new firebase.auth.GoogleAuthProvider();
+        await fbAuth.signInWithPopup(prov);
+      }catch(e){toast('Нэвтрэх амжилтгүй: '+e.message);}
+    };
+    wrap.appendChild(btn);
+    return;
+  }
+
+  if(AUTH_CONFIG.googleClientId&&window.google?.accounts?.id){
+    hint.innerHTML='Gmail нэвтрэлт · чат энэ төхөөрөмж дээр хадгалагдана.';
+    google.accounts.id.renderButton(wrap,{
+      theme:'filled_black',size:'large',text:'signin_with',shape:'pill',width:280
+    });
+    return;
+  }
+
+  hint.innerHTML='Эхлээд <code>AUTH_CONFIG.firebase</code> эсвэл <code>googleClientId</code> тохируулна уу.<br>Firebase: console.firebase.google.com';
+  const btn=document.createElement('button');
+  btn.className='new-btn';
+  btn.textContent='Тохиргоо хийгдсэний дараа дахин ачаална уу';
+  btn.onclick=()=>location.reload();
+  wrap.appendChild(btn);
+}
+
+async function initAuth(){
+  if(initFirebase()){
+    fbAuth.onAuthStateChanged(async u=>{
+      if(u)await onUserSignedIn({uid:u.uid,email:u.email,name:u.displayName,picture:u.photoURL});
+      else{currentUser=null;lockApp();renderGoogleButton();}
+      authReady=true;
+    });
+    return;
+  }
+
+  window.handleGoogleCredential=async res=>{
+    const p=parseJwt(res.credential);
+    if(!p)return;
+    await onUserSignedIn({sub:p.sub,email:p.email,name:p.name,picture:p.picture});
+  };
+
+  const tryGis=()=>{
+    if(AUTH_CONFIG.googleClientId&&window.google?.accounts?.id){
+      google.accounts.id.initialize({
+        client_id:AUTH_CONFIG.googleClientId,
+        callback:handleGoogleCredential,
+        auto_select:false
+      });
+    }
+    const s=JSON.parse(localStorage.getItem('ihmk5_session')||'null');
+    if(s?.uid||s?.sub)onUserSignedIn(s);
+    else lockApp();
+    renderGoogleButton();
+    authReady=true;
+  };
+  if(window.google?.accounts?.id)tryGis();
+  else setTimeout(tryGis,800);
+}
+
+function requireAuth(){if(!userUid()){toast('Эхлээд Gmail-ээр нэвтэрнэ үү');lockApp();return false;}return true;}
+
+// ── DEEPSEEK API ──
+function resolveModel(hasImage){
+  let m=mdlSel.value;
+  if(m.startsWith('coming'))m='deepseek-reasoner';
+  if(hasImage&&m==='deepseek-reasoner'){
+    toast('R1 зураг дэмждэггүй — DeepSeek V3 ашиглана');
+    return 'deepseek-chat';
+  }
+  return m;
+}
+function sanitizeForApi(messages){
+  return messages.map(m=>{
+    if(m.role==='assistant')return{role:'assistant',content:String(m.content||'')};
+    if(typeof m.content==='string')return{role:m.role,content:m.content};
+    if(Array.isArray(m.content)){
+      const text=m.content.find(c=>c.type==='text')?.text||'';
+      const hasImg=m.content.some(c=>c.type==='image_url');
+      return{role:m.role,content:text+(hasImg?'\n\n[Хэрэглэгч зураг хавсаргасан. Зургийн агуулгыг текстээр тайлбарлаж асуув.]' :'')};
+    }
+    return m;
+  });
+}
+function buildPayload(messages,extra={}){
+  const hasImg=messages.some(m=>Array.isArray(m.content)&&m.content.some?.(c=>c.type==='image_url'));
+  const model=resolveModel(hasImg);
+  const isReasoner=model==='deepseek-reasoner';
+  const payload={
+    model,
+    messages:sanitizeForApi(messages),
+    max_tokens:pro.maxT||2400,
+    stream:extra.stream!==false&&pro.stream!==false,
+    ...extra
+  };
+  if(!isReasoner)payload.temperature=Math.max(0,Math.min(Number(pro.temp)||0.35,1.2));
+  if(!isReasoner)payload.top_p=0.9;
+  return payload;
+}
+async function chatApi(messages,extra={}){
+  const res=await fetch(DEEPSEEK_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':`Bearer ${DEEPSEEK_KEY}`},
+    body:JSON.stringify(buildPayload(messages,extra))
+  });
+  if(!res.ok){
+    let msg=`HTTP ${res.status}`;
+    try{const e=await res.json();msg=e.error?.message||msg;}catch(x){}
+    throw new Error(msg);
+  }
+  return res;
+}
+
 // ── INIT ──
 (function(){
-  try{sessions=JSON.parse(localStorage.getItem('ihmk4')||'{}');}catch(e){sessions={};}
-  try{pro=Object.assign(pro,JSON.parse(localStorage.getItem('ihmk4p')||'{}'));}catch(e){}
-  try{pinned=JSON.parse(localStorage.getItem('ihmk4pin')||'[]');}catch(e){pinned=[];}
-  loadProUI();renderHist();showWelcome();updateAnalytics();
+  initAuth();
 
   inpEl.addEventListener('input',onInp);
   inpEl.addEventListener('keydown',e=>{
@@ -705,10 +1198,10 @@ function loadProUI(){
   document.getElementById('uProf').value=pro.prof||'';
   document.getElementById('uLang').value=pro.lang||'';
   document.getElementById('cPrompt').value=pro.prompt||'';
-  document.getElementById('temp').value=pro.temp||0.7;
-  document.getElementById('tV').textContent=pro.temp||0.7;
-  document.getElementById('maxT').value=pro.maxT||2000;
-  document.getElementById('mV').textContent=pro.maxT||2000;
+  document.getElementById('temp').value=pro.temp??0.35;
+  document.getElementById('tV').textContent=pro.temp??0.35;
+  document.getElementById('maxT').value=pro.maxT||2400;
+  document.getElementById('mV').textContent=pro.maxT||2400;
   document.getElementById('togStream').checked=pro.stream!==false;
   document.getElementById('togTTS').checked=!!pro.tts;
   document.getElementById('togThink').checked=pro.think!==false;
@@ -724,7 +1217,8 @@ function savePro(){
   pro.stream=document.getElementById('togStream').checked;
   pro.tts=document.getElementById('togTTS').checked;
   pro.think=document.getElementById('togThink').checked;
-  localStorage.setItem('ihmk4p',JSON.stringify(pro));
+  saveLocalUserData();
+  scheduleCloudSave();
 }
 function setPer(el){
   pro.persona=el.dataset.p;
@@ -735,9 +1229,14 @@ function setPer(el){
 function buildSys(){
   const base=pro.persona==='custom'&&pro.prompt?pro.prompt:PERSONAS[pro.persona]||PERSONAS.default;
   let s=`${base}
-Respond in the user's language (Mongolian or English). Understand Mongolian shorthand (бна→байна, сур→сургалт).
-Format with markdown: \`\`\`lang for code, **bold**, tables, lists, headers.
-For math use $LaTeX$. For diagrams use \`\`\`mermaid.`;
+Accuracy protocol (powered by DeepSeek R1 reasoning):
+- Respond in the user's language (Mongolian or English). Use natural Mongolian when the user writes Mongolian.
+- If the request is ambiguous, ask one short clarifying question or state the assumption you used.
+- Do not invent facts, prices, laws, dates, citations, or live/current information. If you are unsure, say what is uncertain.
+- For coding: verify logic, include imports/deps, handle edge cases, and prefer complete runnable snippets with language tags.
+- For information: distinguish verified facts from reasonable inference; cite uncertainty explicitly.
+- For calculations, double-check arithmetic before answering.
+- Keep answers structured with markdown; avoid filler. Code: \`\`\`lang blocks. Math: $LaTeX$. Diagrams: \`\`\`mermaid only when useful.`;
   if(pro.name)s+=`\nUser: ${pro.name}.`;
   if(pro.prof)s+=` Works in: ${pro.prof}.`;
   if(pro.lang)s+=` Prefers: ${pro.lang}.`;
@@ -756,7 +1255,13 @@ function toggleCompare(){compareMode=!compareMode;document.getElementById('cmpBt
 function togglePinned(){const p=document.getElementById('pinnedPanel');p.classList.toggle('on');renderPinned();}
 
 // ── SESSIONS ──
-function saveDB(){if(!privateMode)try{localStorage.setItem('ihmk4',JSON.stringify(sessions));}catch(e){}renderHist();}
+function saveDB(){
+  if(!privateMode){
+    saveLocalUserData();
+    scheduleCloudSave();
+  }
+  renderHist();
+}
 function updateAnalytics(){
   const total=Object.keys(sessions).length;
   let msgs=0,toks=0;
@@ -820,26 +1325,26 @@ function newChat(){curId=null;chatEl.innerHTML='';memories=[];renderMem();showWe
 function showWelcome(){
   chatEl.innerHTML=`<div id="wl">
     <div class="wl-r"><div class="wl-i">IH</div></div>
-    <div class="wl-t">WELCOME TO IHMK AI (Prototype version.)</div>
-    <div class="wl-s">Your intelligent AI companion — code, design, analyze, search, and create.</div>
+    <div class="wl-t">IHMK AI</div>
+    <div class="wl-s">Ultra-premium AI чат интерфэйс. Илүү тайван, илүү цэвэр, илүү нарийвчлалтай хариу өгөхөөр тохируулсан next-generation assistant.</div>
     <div class="plans-row">
-      <div class="pc free"><div class="pc-b">FREE</div><div class="pc-p">$0</div><div class="pc-per">forever</div>
-        <ul class="pc-fl"><li>Groq AI models</li><li>Chat history</li><li>Image analysis</li><li>Voice input</li><li>Tool calling</li></ul>
-        <button class="pc-cta" onclick="fillInp('Hello IHMK AI!')">Start Free</button>
+      <div class="pc free"><div class="pc-b">IHMK</div><div class="pc-p">Core</div><div class="pc-per">available now</div>
+        <ul class="pc-fl"><li>DeepSeek R1</li><li>Gmail хадгалалт</li><li>Cloud sync</li><li>Voice input</li><li>Smooth streaming</li></ul>
+        <button class="pc-cta" onclick="fillInp('Сайн уу IHMK AI, надад товч бөгөөд үнэн зөв хариулаарай.')">Start</button>
       </div>
-      <div class="pc plus" onclick="openModal()"><div class="pc-sh"></div><div class="pc-b">⚡ PLUS</div><div class="pc-p">$9</div><div class="pc-per">comig soon</div>
-        <ul class="pc-fl"><li>Priority speed</li><li>GPT-4o access</li><li>Unlimited history</li><li>Web search</li><li>Early features</li></ul>
-        <button class="pc-cta">Get PLUS</button>
+      <div class="pc plus" onclick="openModal()"><div class="pc-sh"></div><div class="pc-b">⚡ PLUS</div><div class="pc-p">Soon</div><div class="pc-per">coming soon</div>
+        <ul class="pc-fl"><li>Priority speed</li><li>Premium routing</li><li>Unlimited history</li><li>Advanced tools</li><li>Early features</li></ul>
+        <button class="pc-cta">Coming Soon</button>
       </div>
-      <div class="pc pro" onclick="openModal()"><div class="pc-sh"></div><div class="pc-b">✦ PRO</div><div class="pc-p">$19</div><div class="pc-per">comig soon</div>
-        <ul class="pc-fl"><li>GPT-4o + Claude</li><li>Custom persona</li><li>API integration</li><li>Image generation</li><li>Priority support</li></ul>
-        <button class="pc-cta">Get PRO</button>
+      <div class="pc pro" onclick="openModal()"><div class="pc-sh"></div><div class="pc-b">✦ PRO</div><div class="pc-p">Soon</div><div class="pc-per">coming soon</div>
+        <ul class="pc-fl"><li>Deep research</li><li>Custom persona</li><li>API integration</li><li>Creative studio</li><li>Priority support</li></ul>
+        <button class="pc-cta">Coming Soon</button>
       </div>
     </div>
     <div class="sugs">
-      <button class="sug" onclick="fillInp('Монгол хэлний дүрэм тайлбарла')">📚 Монгол</button>
-      <button class="sug" onclick="fillInp('Python fibonacci бич')">💻 Код</button>
-      <button class="sug" onclick="fillInp('/weather Улаанбаатар')">🌤 Цаг агаар</button>
+      <button class="sug" onclick="fillInp('Монгол хэлний дүрмийг 5 жишээгээр тайлбарла')">📚 Монгол</button>
+      <button class="sug" onclick="fillInp('Энэ JavaScript кодыг илүү цэвэр, найдвартай болгож сайжруул')">💻 Код</button>
+      <button class="sug" onclick="fillInp('AI startup-ийн premium landing page бүтэц гарга')">✦ Дизайн</button>
       <button class="sug" onclick="fillInp('/calc 2^10 * 3.14')">🧮 Тооцоо</button>
       <button class="sug" onclick="fillInp('/diagram startup-ийн архитектур зур')">📊 Диаграм</button>
     </div>
@@ -916,8 +1421,19 @@ function processTools(text){
   return false;
 }
 
+function getApiMessages(){
+  if(!curId||!sessions[curId])return[{role:'system',content:buildSys()}];
+  const body=sessions[curId].messages.filter(m=>m.role!=='system');
+  const recent=body.slice(-24);
+  return[{role:'system',content:buildSys()},...recent];
+}
+function smoothBottom(){
+  requestAnimationFrame(()=>{chatEl.scrollTop=chatEl.scrollHeight;});
+}
+
 // ── SEND ──
 async function send(){
+  if(!requireAuth())return;
   const text=inpEl.value.trim();
   if((!text&&!pendImg)||busy)return;
   document.getElementById('wl')?.remove();
@@ -930,13 +1446,15 @@ async function send(){
     curId=Date.now().toString();
     sessions[curId]={title:(text||'Image').slice(0,44),messages:[{role:'system',content:buildSys()}],memories:[]};
   }
+  sessions[curId].messages[0]={role:'system',content:buildSys()};
 
   const imgUrl=pendImg;const imgData=pendImgD;removeImg();
   let usrContent;
-  if(imgData&&(mdlSel.value.includes('vision')||mdlSel.value.includes('llama-4'))){
-    usrContent=[{type:'text',text:text||'Describe this image.'},{type:'image_url',image_url:{url:imgData}}];
+  if(imgData){
+    usrContent=[{type:'text',text:(text||'Энэ зургийг дэлгэрэнгүй тайлбарла.')+'\n[Зураг base64 хэлбэрээр хавсаргагдсан — харах боломжгүй бол хэрэглэгчээс тодруулна уу.]'}];
+    if(mdlSel.value==='deepseek-chat')usrContent[0].text+='\n(Зургийн URL: '+imgData.slice(0,120)+'...)';
   } else {
-    usrContent=text+(imgUrl?'\n[Image attached]':'');
+    usrContent=text;
   }
 
   sessions[curId].messages.push({role:'user',content:usrContent});
@@ -959,16 +1477,20 @@ async function send(){
 
   try{
     const useStream=pro.stream!==false;
-    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':`Bearer ${KEY}`},
-      body:JSON.stringify({model:mdlSel.value,messages:sessions[curId].messages,max_tokens:pro.maxT||2000,temperature:pro.temp||0.7,stream:useStream})
-    });
-    hideThink();typEl.remove();
-    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
+    reasoningBuf='';
+    const res=await chatApi(getApiMessages(),{stream:useStream});
+    typEl.remove();
     let reply='';
     if(useStream)reply=await streamResp(res);
-    else{const d=await res.json();reply=d.choices[0].message.content;await fakStream(reply);}
+    else{
+      const d=await res.json();
+      const msg=d.choices[0].message;
+      if(msg.reasoning_content&&pro.think)showReasoningPreview(msg.reasoning_content);
+      reply=msg.content||'';
+      hideThink();
+      await fakStream(reply);
+    }
+    hideThink();
     sessions[curId].messages.push({role:'assistant',content:reply});
     sessions[curId].memories=memories;
     if(!privateMode)saveDB();
@@ -979,18 +1501,20 @@ async function send(){
 
 // COMPARE: send same msg to same model twice with different temps
 async function sendCompare(text){
-  const msgs=sessions[curId].messages;
+  sessions[curId].messages[0]={role:'system',content:buildSys()};
+  const msgs=getApiMessages();
   const wrap=document.createElement('div');wrap.className='compare-wrap';
   const a=document.createElement('div');a.className='cmp-bub';
   const b=document.createElement('div');b.className='cmp-bub';
   a.innerHTML='<div class="cmp-label a">VARIANT A</div><div class="typing"><span></span><span></span><span></span></div>';
   b.innerHTML='<div class="cmp-label b">VARIANT B</div><div class="typing"><span></span><span></span><span></span></div>';
-  wrap.appendChild(a);wrap.appendChild(b);chatEl.appendChild(wrap);chatEl.scrollTop=chatEl.scrollHeight;
+  wrap.appendChild(a);wrap.appendChild(b);chatEl.appendChild(wrap);smoothBottom();
   try{
     const [rA,rB]=await Promise.all([
-      fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${KEY}`},body:JSON.stringify({model:mdlSel.value,messages:msgs,max_tokens:800,temperature:0.4,stream:false})}),
-      fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${KEY}`},body:JSON.stringify({model:mdlSel.value,messages:msgs,max_tokens:800,temperature:1.0,stream:false})})
+      chatApi(msgs,{max_tokens:900,temperature:0.35,stream:false}),
+      chatApi(msgs,{max_tokens:900,temperature:0.75,stream:false})
     ]);
+    if(!rA.ok||!rB.ok)throw new Error('Compare request failed');
     const dA=await rA.json();const dB=await rB.json();
     const tA=dA.choices[0].message.content;const tB=dB.choices[0].message.content;
     a.innerHTML=`<div class="cmp-label a">VARIANT A · Temp 0.4</div>${renderMD(tA)}`;
@@ -1000,7 +1524,7 @@ async function sendCompare(text){
     sessions[curId].messages.push({role:'assistant',content:'**Compare A:** '+tA+'\n\n**Compare B:** '+tB});
     if(!privateMode)saveDB();
   }catch(e){a.innerHTML=`<div class="cmp-label a">ERROR</div><span style="color:var(--red)">${esc(e.message)}</span>`;}
-  chatEl.scrollTop=chatEl.scrollHeight;
+  smoothBottom();
 }
 
 // THINKING
@@ -1015,10 +1539,20 @@ function getThinkPhrase(text){
 }
 function showThink(txt){
   if(pro.think===false)return;
-  document.getElementById('thinkTxt').textContent=txt||'Thinking…';
+  document.getElementById('thinkTxt').textContent=txt||'DeepSeek R1 бодож байна…';
   document.getElementById('thinking').classList.add('on');
 }
-function hideThink(){document.getElementById('thinking').classList.remove('on');}
+function hideThink(){
+  document.getElementById('thinking').classList.remove('on');
+  reasoningBuf='';
+}
+function showReasoningPreview(snippet){
+  if(!pro.think||!snippet)return;
+  const el=document.getElementById('thinkTxt');
+  const short=snippet.length>120?snippet.slice(-120):snippet;
+  el.textContent='R1 reasoning · '+short.replace(/\s+/g,' ').trim();
+  document.getElementById('thinking').classList.add('on');
+}
 
 // ── STREAMING ──
 async function streamResp(res){
@@ -1029,10 +1563,10 @@ async function streamResp(res){
   const bub=document.createElement('div');bub.className='bub sc';
   const t=document.createElement('span');t.className='mtime';t.textContent=now;
   mb.appendChild(bub);mb.appendChild(t);wrap.appendChild(av);wrap.appendChild(mb);
-  chatEl.appendChild(wrap);chatEl.scrollTop=chatEl.scrollHeight;
+  chatEl.appendChild(wrap);smoothBottom();
 
   const reader=res.body.getReader();const dec=new TextDecoder();
-  let full='',buf='';
+  let full='',buf='',lastRender=0;
   while(true){
     const{done,value}=await reader.read();
     if(done)break;
@@ -1042,12 +1576,30 @@ async function streamResp(res){
       if(!line.startsWith('data:'))continue;
       const d=line.slice(5).trim();
       if(d==='[DONE]')break;
-      try{const j=JSON.parse(d);const delta=j.choices?.[0]?.delta?.content||'';if(delta){full+=delta;bub.innerHTML=renderMD(full);highlightC(bub);renderMerm(bub);renderKtx(bub);chatEl.scrollTop=chatEl.scrollHeight;}}catch(e){}
+      try{
+        const j=JSON.parse(d);
+        const delta=j.choices?.[0]?.delta||{};
+        if(delta.reasoning_content){
+          reasoningBuf+=delta.reasoning_content;
+          if(pro.think)showReasoningPreview(reasoningBuf);
+        }
+        if(delta.content){
+          if(!full)hideThink();
+          full+=delta.content;
+          const now=performance.now();
+          if(now-lastRender>18||delta.content.length>24){
+            bub.innerHTML=renderMD(full);
+            highlightC(bub);renderMerm(bub);renderKtx(bub);
+            lastRender=now;smoothBottom();
+          }
+        }
+      }catch(e){}
     }
   }
+  bub.innerHTML=renderMD(full);
   bub.classList.remove('sc');highlightC(bub);renderMerm(bub);renderKtx(bub);
   addMsgActs(mb,wrap,full);
-  chatEl.scrollTop=chatEl.scrollHeight;
+  smoothBottom();
   return full;
 }
 async function fakStream(raw){
@@ -1058,9 +1610,9 @@ async function fakStream(raw){
   const bub=document.createElement('div');bub.className='bub sc';
   const t=document.createElement('span');t.className='mtime';t.textContent=now;
   mb.appendChild(bub);mb.appendChild(t);wrap.appendChild(av);wrap.appendChild(mb);
-  chatEl.appendChild(wrap);chatEl.scrollTop=chatEl.scrollHeight;
-  let pos=0;
-  while(pos<raw.length){pos=Math.min(pos+4,raw.length);bub.innerHTML=renderMD(raw.slice(0,pos));chatEl.scrollTop=chatEl.scrollHeight;await sl(10);}
+  chatEl.appendChild(wrap);smoothBottom();
+  let pos=0;const step=Math.max(4,Math.ceil(raw.length/160));
+  while(pos<raw.length){pos=Math.min(pos+step,raw.length);bub.innerHTML=renderMD(raw.slice(0,pos));smoothBottom();await sl(12);}
   bub.classList.remove('sc');highlightC(bub);renderMerm(bub);renderKtx(bub);
   addMsgActs(mb,wrap,raw);
   return wrap;
@@ -1106,7 +1658,7 @@ function addTyping(){
 }
 function addError(msg){
   const w=document.createElement('div');w.className='msg ai';
-  w.innerHTML=`<div class="av" style="background:#1a0000;color:var(--red)">!</div><div class="mbody"><div class="bub" style="border-color:rgba(255,107,107,.16);font-family:'JetBrains Mono',monospace;font-size:11.5px"><span style="color:var(--red)">⚠ ${esc(msg)}</span><br><br><span style="color:var(--mut)">console.groq.com → API Keys дээр шинэ key аваарай.</span></div></div>`;
+  w.innerHTML=`<div class="av" style="background:#1a0000;color:var(--red)">!</div><div class="mbody"><div class="bub" style="border-color:rgba(255,107,107,.16);font-family:'JetBrains Mono',monospace;font-size:11.5px"><span style="color:var(--red)">⚠ ${esc(msg)}</span><br><br><span style="color:var(--mut)">platform.deepseek.com → API key шалгана уу. Gmail нэвтрэлт: Firebase тохиргоо.</span></div></div>`;
   chatEl.appendChild(w);chatEl.scrollTop=chatEl.scrollHeight;
 }
 
@@ -1148,7 +1700,7 @@ function runC(id,lang,btn){
 
 // ── REGEN ──
 async function regenLast(){
-  if(!curId||busy)return;
+  if(!requireAuth()||!curId||busy)return;
   const msgs=sessions[curId].messages;
   const lastIdx=msgs.findLastIndex(m=>m.role==='assistant');
   if(lastIdx===-1)return;
@@ -1158,7 +1710,8 @@ async function regenLast(){
   showThink('Regenerating…');
   const typEl=addTyping();
   try{
-    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${KEY}`},body:JSON.stringify({model:mdlSel.value,messages:msgs,max_tokens:pro.maxT||2000,temperature:pro.temp||0.7,stream:true})});
+    msgs[0]={role:'system',content:buildSys()};
+    const res=await chatApi(getApiMessages(),{stream:true});
     hideThink();typEl.remove();
     if(!res.ok)throw new Error('Regen failed');
     const reply=await streamResp(res);
@@ -1177,7 +1730,7 @@ function pinMsg(text,btn){
   } else {
     pinned.splice(idx,1);btn.classList.remove('pinned');toast('Unpinned');
   }
-  try{localStorage.setItem('ihmk4pin',JSON.stringify(pinned));}catch(e){}
+  saveLocalUserData();scheduleCloudSave();
   renderPinned();
 }
 function renderPinned(){
@@ -1204,7 +1757,7 @@ function onFile(inp){
   const file=inp.files[0];if(!file)return;inp.value='';
   if(file.type.startsWith('image/')){
     const fr=new FileReader();
-    fr.onload=e=>{pendImg=e.target.result;pendImgD=e.target.result;document.getElementById('iPT').src=pendImg;document.getElementById('imgPrev').classList.add('on');if(!mdlSel.value.includes('vision'))mdlSel.value='llama-3.2-11b-vision-preview';toast('Image ready · Vision mode active');};
+    fr.onload=e=>{pendImg=e.target.result;pendImgD=e.target.result;document.getElementById('iPT').src=pendImg;document.getElementById('imgPrev').classList.add('on');toast('Зураг бэлэн — тайлбарлах текстээ бичнэ үү');};
     fr.readAsDataURL(file);
   } else {
     const fr=new FileReader();
@@ -1217,7 +1770,7 @@ function onDO(e){e.preventDefault();}
 function onDrop(e){
   e.preventDefault();
   const file=e.dataTransfer.files[0];if(!file||!file.type.startsWith('image/'))return;
-  const fr=new FileReader();fr.onload=ev=>{pendImg=ev.target.result;pendImgD=ev.target.result;document.getElementById('iPT').src=pendImg;document.getElementById('imgPrev').classList.add('on');if(!mdlSel.value.includes('vision'))mdlSel.value='llama-3.2-11b-vision-preview';};fr.readAsDataURL(file);
+  const fr=new FileReader();fr.onload=ev=>{pendImg=ev.target.result;pendImgD=ev.target.result;document.getElementById('iPT').src=pendImg;document.getElementById('imgPrev').classList.add('on');toast('Зураг бэлэн');};fr.readAsDataURL(file);
 }
 function lightbox(src){document.getElementById('lbI').src=src;document.getElementById('lb').classList.add('on');}
 
